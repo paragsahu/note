@@ -1,0 +1,737 @@
+
+**********************************************
+XML
+2 parts
+
+Declaration
+DTD--->Document type definition
+XSD--->XML Schema definition
+
+tags
+should be defined either in dtd or xsd
+
+create xml file with hibernate.ghg under src package
+To obtain DTD for xml file we have to extract a jar file called as hibernate-core
+
+extract hibernate-core 
+org
+hibernate-configuration
+
+
+open in notepad++
+copy lines from 10-12
+
+
+paste it inside xml file
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+	<property name="connection.username">root</property>
+	<property name="conenction.password">Mayu7809@</property>
+	<property name="connection.url">jdbc:mysql://localhost:3306/policestation</property>
+	<property name="driver_class">com.mysql.jdbc.Driver</property>
+	</session-factory>
+</hibernate-configuration>
+
+*********************************************10/03/2018**********************************************************************
+Mapping
+
+1)Mapping is used to configure the table
+
+2)Mapping is used to provide the information about the table to which DTO has to be mapped
+
+1)Mapping can be done in 2 ways:-
+By using XML
+By using Annotations----preferable
+
+@Table is used to provide the information about the table
+@Column is used provide the information about the columns to which datamembers has to be mapped
+
+(java doesnt know what is PK,need to provide info about pk..why??? ----> 
+while creating 2 objects of class
+
+noof pris=2
+noofcell=4
+location=basawangudi
+
+noofprs=4
+noofcells=8
+location=basawangudi
+
+at compile time---no error
+at run time--->error
+
+{Because pk should be unique}
+
+@Id is used to provide the information about primary key
+Note:All the annotations should be imported from javax.persistence package
+
+What is DAO?
+
+Data access object----for database
+Steps to create a DAO class,java class
+
+1)Create a class with the main method.
+2)Create an object of DTO and populate the values.
+3)Obtain an object of 'Configuration'(class)
+4)Load all the resources
+5)Obtain an object of type 'SessionFactory'(interface)
+6)Obtain an object of type 'Session'(interface) using Session factory
+7)Using Session perform CRUD opertions 
+
+simple applications use jdbc
+
+for complex relationsships b/w classes like IS a,HAS A uses hibernate
+Hibernate internally uses jdbc,as database only understands sql.
+
+
+create dao inside package
+]]]
+Note:- Learn JSP tags,JSTL
+
+********************************************12-03-2018*******************************
+
+There are 3 components in Hibernate
+Configuration(C)
+SessionFactory(I)
+Session(I)
+
+Configuration:- It is a component which is responsible for loading the resources by cfg file and mapping file
+It is present in org.hibernate.cfg package
+
+To load the resources we have to use two methods
+1)configure()
+2)addAnnotatedClass
+
+configure()
+whenever configure() method is called,it always searches for a file called as hibernate.cfg.xml under src.if the file is
+not present then it throws the exception
+
+addAnnotatedClass
+it is used to load the mapping class
+
+sessionfactory:-
+It is a component which provides physical connections to the database.(reads all the resources and then connect to db)
+It is an interface.
+To obtain an object of sessionfactory we have to use a helper method called as buildSessionFactory()
+It is present in configuration object
+
+session(just an operation on db,not time invterva unlike in java)
+It is a component which is responsibile for performing CRUD operations.
+It is an Interface
+To obtain an object of session,we have to use a helper method called as openSession()
+It is present in SessionFactory.
+
+
+note:-we use javax.persistence,sinc if we r changing to other fraework it wont work
+
+@Entity
+
+
+
+***********************
+save--->save to cache--->cache to db (transaction)
+
+Transaction tx=sess.beginTransaction();
+tx.commit;
+
+transaction is used only for insert and delete,update
+
+
+to load
+Dtoclass policeStation=see.load(DTO.class,PK)
+
+SOP(get.location());
+SOP(get.Noofcells);
+
+
+load doesnt need object
+creating object--->new line
+
+-----------------------------------------------
+
+To update a record in the DB,we have to follow two steps
+1)Load the record from the DB
+2)Use setter methods to set the value and call update method
+
+if u deleted the row and trying to fetch the same operation----exception
+
+
+*****************
+configure---configuration loads cfg
+addAnnotatedClass(DTO.class) --->configuration--loads dto class
+buildSessionFactory---Configuration---sessionfactory
+openSession---SessionFactory--session
+save(DTO)--Session
+beginTransaction--Session--Transaction
+commit--Transactions--commit---true
+load(DTO class,pk)--Session--Return DTO obj
+update(DTO)--Session
+DElete(DTO)--Session
+
+
+Note:- if we try to change the name of hibernate.cfg.xml----exception---could not locate hibernate.cfg.xml resource
+tell hibernate explicitly the new name
+config.configure(Configuration.xml)
+
+still exception
+by default search under src
+
+give "configuration/Configuraton.xml"
+
+if same pk inserted----exception
+
+
+
+There are 4 ways in hibernate to load data
+1)load
+2)SQL
+3)HQL
+4)Criteria
+
+********************************************************************************************************************************************
+
+HQL(Hibernate Query Language)
+
+The disadvantage with load method is if we want to fetch multiple records from the database,we have to call load method multiple times
+hence to load multiple records we have to use HQL.
+
+HQLis a query language in which we write queries based on classname and datamember name.
+
+example:-
+
+sql--> select * from PoliceStation_table where no_of_cells =6;
+
+hql--->select * from PolicStationDTO where noOfCells=6;
+
+Entity frm javax.persistence
+
+To create a table no need to create in sql
+ask hibernate to create
+
+in cfg xml file
+<property name="hbm2ddl.auto">create</property>
+hbd2ddl----map hiberante to ddl
+
+
+when trying to insert hibernate delete the first table and crate new with new values
+ change in xml
+<property name="hbm2ddl.auto">update</property>
+only one query-----insert into table
+
+
+update will support all operations---load insert
+update checks if table is not there,it creates
+create---first it checks if table is there,drops the old table and create new one
+
+
+Note:-for loading we dont need to create object(set methods) since we are just fetching
+
+
+To use HQL we have to follow 2 steps:-
+1)Create the query
+ 
+To create the query we have to use a method called as createQuery("select * from airport_table) and pass the query as an argument
+it is present in  sesson object.
+The return type of create query is Query(I) obj 
+
+//step1 create query
+Query qry=sess.createQuery("select * from AirportDTO where airportName="KIA");
+
+or
+
+String hql="select * from AirportDTO where airportName="KIA"
+Query qry=sess.createQuery(hql);
+
+2)Process the result
+
+We have to use 2 methods:-
+
+uniqueResult()----> if the query returns only 1 object then we have to use
+uniqueResult
+
+list()--->If the query returns multiple object then we have to use list() method.
+
+Both these methods are present in query object
+
+//step2 process the result
+Typecasting---to get location we need object ref that is present in DTO class
+
+AirportDTO airport=(AirportDTO)qry.uniqueResult();
+
+
+Note:-HQL doesnt support select*
+
+String hql="from AirportDTO where airportName="KIA"
+Query qry=sess.createQuery(hql);
+
+
+to fetch more than 1 record
+
+//create query
+String hql="from AirportDTO"
+Query qry=sess.createQuery(hql);
+
+//process
+List<AirportDTO> airpots = qry.list();
+
+
+**********************************************************************************************************
+Selecting particular columnn wrt conditions:-
+
+return type of query is string therefore no need to downcast to DTO object,downcast to String type.
+HQL--> from airportname from AirportDTO where noofplanes=60;
+
+AirportDTO airport=(AirportDTO)qry.uniqueResults(); (wrong)
+
+String airportName=(String) qry.uniqueResults; (correct)
+----------------------------------------
+
+next query
+
+SQL select no_of_planes from airport_table where location='Devanhall';
+HQL select numPlane from airportDTO where location='Devanahalli'
+
+int numPlane=(int)qry.uniqueResults;
+
+since the return type is integer,we have downcasted to integer.
+
+Fetching multiple columns from the table
+String hql="select numPlane,airpPortName from Airport where location='Shamshabad'";
+
+Query qry=see.createQuery();
+
+//process the result
+
+since this time 2 records will be fetched int and string we cant downcast to either int or string
+
+therefore cast it to Object array
+Object[] airport=(Object[])qry.uniqueResult();
+SOP(airport[0])
+SOP(airport[1])
+
+
+----------------------
+
+HQL using Place holder ?
+
+//create query
+		String hql="from AirportDTO where noOfPlanes=?";
+		Query qry=sess.createQuery(hql);
+		
+		//qry.setInteger(1,51);---?Exception since dosnt start with 1 in HIbernate
+		
+		qry.setInteger(0,51);
+		//process
+		AirportDto airpot=(AirportDto)qry.uniqueResult();
+
+
+Disadvantages of pla
+
+ce holders
+1)We have to remember the index of place holders
+2)We have to use appropriate 'set' methods according tot he type.(string,int etc)
+
+To overcome the disadvantages of Place holders we have to use NamedParameters to build dynamic queries.
+
+*********************
+To create Database
+in xml file
+
+createDatabaseIfNotExist=true
+
+<property name="connection.url">jdbc:mysql://localhost:3306/airport?createDatabaseIfNotExist=true</property>
+
+*********************************
+
+HQL usimg Named Parameters
+
+Syntax of place holder in Hibernate
+=:var
+no need to use specific type like string ,integer
+
+just use:-
+getparameter()
+
+To set the values for NamedParameter we have to use a method called as setParameter
+It is present in Query object.
+
+setparameter('name','value')
+
+An Application should have only 1 SessionFactory(Connecting to database),but Sessions can be multiple.
+
+*******************************************************************************************
+Disadvantage with HQL is developer should know the syntax of sql queries 
+
+solution is 'Criteria'--->API
+Criteria is completely Object oriented
+There are 5 core APIs in Hibernate
+1)Criteria
+2)Criterion
+3)Restrictions
+4)Projection
+5)Order
+
+ 
+Criteria(I)
+
+To create an object of criteria we use a method called as createCriteria
+the return type of createCriteria is a Criteria Object
+
+
+//sql.select * from Newspaper_table
+//hql:from NewsPaperDTO
+
+Criteria crit=see.createCriteria(NewsPaperDTO.class);
+//process the result
+
+List<NewspaperDTO> list=crit.list();
+
+for(NewspaperDTO newsPaperDTO:newspapers)
+{
+System.out.print(newsPaperDTO.getLanguage())
+}
+
+-------------------------------------------------------------------------------------------
+
+Restriction(I):
+is used to add the conditions to the query
+To add the condition we have to use a class called as Restrictions
+Have static methods
+
+
+createCriteria(NewsPaperDTO.class)----is equivalent to select * from table.
+
+Criteria crit=see.createCriteria(NewsPaperDTO.class);
+
+//add the condition
+//Restrictions.eq("propertyname","value")
+
+Restrictions.eq("language","kannada");
+
+//process the result
+
+List<NewspaperDTO> list=crit.list();
+
+for(NewspaperDTO newsPaperDTO:newspapers)
+{
+System.out.print(newsPaperDTO.getLanguage())
+}
+
+returns two result
+kannada
+telgu
+
+why because Criteria crit=see.createCriteria(NewsPaperDTO.class); and Restrictions.eq("language","kannada"); doesnt have any link
+therefore we use criterian 
+
+
+Restrictions.xx method returns an object of type Criterian
+
+----------------------------
+
+Criterian is an API which is equivalent 
+
+***************Select one record frm the db***********************************
+
+Criteria crit=see.createCriteria(NewsPaperDTO.class);
+
+//Add the condition
+//Restrictions.eq("propertyname","value")
+
+Criterion criterion=Restrictions.eq("language","kannada");
+
+crit.add(criterion);
+
+NewspaperDTO paper=(NewspaperDTO)crit.uniqueResult();
+
+System.out.println("paper.getNewsPaperName());
+
+
+To relate Criteria with the Criterian we use a method called as add(accepts Criterion obj)
+It is present in Criteria object.
+
+Restrictions.gt()----->greater than
+Restrictions.eq()----->equal
+Restrictions.le()----->less than
+
+example---we need to extract records based on multiple conditions
+
+table data
+no of pages    news
+14             ipl
+23             adhaar
+
+no of pages=14 and recent news=ipl inauguration
+
+
+Criterion criterion=Restrictions.eq("noofPages","14");
+Criterion criterion2=Restrictions.eq("news","ipl");
+
+
+By defult AND condition
+
+----------------------------------------OR Operation-------------------------------------------------------------------------------------
+
+if we want OR condition
+
+Criteria crit=see.createCriteria(NewsPaperDTO.class);
+
+Criterion criterion=Restrictions.eq("noofPages","14");
+Criterion criterion2=Restrictions.eq("news","ipl");
+
+LogicalExpression exp=Restrictions.or(criterion,criterion2);
+crit.add(exp);
+
+//Imp note:- add returns object of criterion always 
+
+-------------------------------Projection------------------------------------------------------------------------------------------------
+
+Projections is an API which is used to execute the group functions like Max,Min,avg etc
+To execute group functions,hibernate has given a class called as projections which has some static methods like avg,min,max etc
+
+Projections.xx methods returns an object of type Projection.
+
+Aggregate projection is an Inerface---implementation for Projection
+
+To relate Criteria with Projection we use a method called as setProjection(projection)
+It is present in Criteria object.
+
+-----------------------------------------------------------------Order--------------------------------------------------------------------------
+
+Order is an API which is used to sort the data in Ascending or Descending order
+
+To Sort the data Hibernate has given a class 'Order' which has two Static methods
+ASC and DESC
+
+----------------------------------AUTO Generation of PK-----------------------------------------------------------------------------------------
+We should not set value to PK
+we should ask hibernate to generate
+	
+To Generate a Primary key automatically we have to use two Annotations
+@GenericGenerator(name=",strategy=")
+@GeneratedValue(generator=")
+
+@GenericGenerator(name='gen',strategy='increment')
+@GeneratedValue(generator='gen')
+
+@Generic generator----when we use Generator Hibernate writes a select query to select the maximum value of primary key
+@GeneratedValue----It is used to assign the generated value to the data member
+
+first it checks max value of pk then increments by 1
+
+-------------------------------------------------------------------------------------------------------
+
+@Webservet("url")--annotation for servlet no need to write 8 lines
+
+-------------------------------------------------------------------------------------------------
+POR
+
+Problem of Relations is mapping HAS A relationship to the Database.
+To provide the solution for this,Hibernate has provided 4 strategies
+
+1.One to One
+2.One to Many
+3.Many to One
+4.Many to Many
+
+
+Note:First relate owner with associate class by setting values and then Get it.
+
+One to One relatonship
+
+It is one class having only one reference to another class
+It can be unidirectional or bidirectional
+
+CASCADE is used to perform the operations on Associated entity 
+refrential intergrity
+
+persist---dn follow RI
+
+add both dto s in config file staeDTO,CMDTO----<Mapping issue>
+
+
+?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.username">root</property>
+		<property name="connection.password">Mayu7809@</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/state</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="show_sql">true</property>
+		<mapping class="com.app.hibernate.StateDTO" />
+		<mapping class="com.app.hibernate.CMDTO" />
+	</session-factory>
+</hibernate-configuration>
+
+****************************************************************************************************
+
+@OntToOne is used to provide information one-to-one relationship
+
+create one ref to the associated class
+
+@One to many---One class having multiple references to another class
+
+Steps to create a one to many relationships
+
+1)Create an object of owner entity
+2)Create multiple objects of associated entity 
+3)Create a collection of Associated entities.
+4)Relate owner entity with the collection of associated entities
+5)Use save method to save owner entity
+
+
+DTO
+create ref in collection since many refrences
+
+personDTO---->
+ProblemDTO prob;
+Problem prob 2
+
+Instead of providing speate reference ,use collection
+
+Collections <ProblemDTO> prob;
+
+DAO
+//create an object of owner
+
+PersonDTO person=new PersonDTO();
+person.setName etc
+
+
+//create multiple objects of problem
+
+ProblemDTO prob=new ProblemDTO();
+
+prob.set****
+
+List<ProblemDTO> l1=ArrayList<ProblemDTO>();
+
+//relate person with problems
+
+
+person.setProbs(prob)
+person.setProbs(prob1)
+
+***************************************************************************************************************************
+ONE TO MANY
+
+its is used to specify one to many relationship to classes
+cascade to perform operations on associated entitiy
+
+
+Note: One to many----extra cloum added in child rather than in parent(opp to one to one)
+
+annotations---@oneToMany---hibernate will take care
+
+folow same procedure as above
+output:-It will create 3 insert queries
+
+one person table,one problm table,person problem table with primary keys of both
+
+to avoid this,to creat only 2 queries....one person,other problem with a column added with primary key of owner table 
+we use the folowing annotation:-
+
+@JoinColumn:-It is used to provide the name for joined column which is responsible for joining the two tables
+
+***************************************************************************************************************************
+
+MANY TO ONE RELATIONSHIP
+many-to-one is bi directional of One-to-Many
+
+
+give owner reference in the associated class
+
+Steps to create Many-to-one relationship
+1)Create multiple objects of owner Entity.
+2)Create one object of associated entity.-----------------------XXXXXXXXXX-----ignore the step
+(should not create a new object,since it will store another same object and insert new 'problem')
+
+3)Relate each owning entity with the associated entity
+4)use save method to save multiple ownic entities.
+
+
+
+1)Create ultiple object of owning entity
+2)load the existing associated entity from the database
+3)Relate multiple owning entities with the loaded associated entity
+4)Use 'save' method to save multiple owning entity.
+5)add @manytoone in problemDTO(owner now) and @joincolumn
+@JoinColumn(name="prob") since this is the column joining two tables persona and problem
+
+give sess.load= (personDTO,1l)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
