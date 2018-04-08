@@ -1,0 +1,657 @@
+FUNCTION:
+
+FUNCTION IS A BLOCK OF INSTRUCTION WHICH IS USED TO 
+PERFORM A SPECIFIC TASK.
+
+IN SQL, FUNCTIONS CAN BE CLASSIFIED INTO 2 CATEGORIES
+THEY ARE,
+
+1. MULTI ROW FUNCTION / GROUP FUNCTION / AGGREGATE FUNCTION.
+
+2. SINGLE ROW FUNCTION.
+
+
+SINGLE ROW FUNCTION.
+
+
+CHARACTERISTICS OF SINGLE ROW FUNCTION.
+
+1. SRF EXECUTES ROW BY ROW.
+2. SRF CAN NESTED.
+3. WE CAN PASS LITERAL , EXPRESSION OR A COLUMN AS AN ARGUMENT
+   TO THE SINGLE ROW FUNCTION.
+4. SRF CAN BE ALSO USED IN WHERE CLAUSE.
+
+
+____________________________________________________________________________
+
+
+NUMBER(MATH) SINGLE ROW FUNCTION:
+
+1. MOD:
+
+	MOD FUNCTION IS USED TO OBTAIN THE MODULOUS OF
+ 	TWO NUMBERS.
+
+IT CAN ACCEPT 2 ARGUMENTS.
+
+SYNTAX:
+ MOD(M,N)
+
+	N) M (Q
+	  ___
+	   R
+EX:
+
+SELECT MOD(3,10) FROM DUAL ;
+
+	10) 3 (0
+	    0
+	  _____
+	    3
+
+
+MOD FUNCTION RETURNS THE REMAINDER.
+
+
+DUAL IS A TEMPORARY (DUMMY) TABLE , WHICH WILL BE PRESENT IN ALL
+ORACLE DATABASE, IT CONSISTS OF ONLY ONE ROW.
+
+
+EX QUERY:
+
+1. WAQ TO DISPLAY NAMES OF ALL THE EMPLOYEES WHOSE MONTHLY
+   SALARY IS AN EVEN NUMBER.
+
+
+
+
+---------------------------------------------------------------
+
+2. ROUND:
+
+ROUND FUNCTION IS USED TO ROUND THE GIVEN NUMBER TO 
+THE NEAREST WHOLE NUMBER.
+
+SYNTAX:
+
+ROUND(NUMBER) 
+
+EX:
+
+SELECT ROUND(95.5) FROM DUAL ;
+
+O/P : 96
+
+SELECT ROUND(95.4) FROM DUAL ;
+
+O/P : 95
+
+-----------------------------------------------------------------
+
+3. TRUNC:
+
+TRUNC FUNCTION IS USED TO TRUNCATE THE GIVEN NUMBER.
+(it rounds the number always to the lower value.)
+
+syntax:
+
+trunc(number)
+
+EX:
+
+SELECT TRUNC(95.9) FROM DUAL ;
+
+O/P : 95
+
+SELECT TRUNC(95.4) FROM DUAL ;
+
+O/P : 95
+
+
+----------------------------------------------------------------
+
+4. POWER:
+
+POWER FUNCTION IS USED TO OBTAIN THE EXPONENTIAL VALUE. 
+(X RAISED TO THE POWER N).
+
+IT CAN ACCEPT TWO ARGUMENTS.
+
+SYNTAX:
+
+POWER(X,N)
+
+EX:
+
+SELECT POWER(3,2) FROM DUAL ;
+
+O/P : 9
+
+----------------------------------------------------------------
+
+5. SQRT:
+
+SQRT IS USED TO OBTAIN THE SQUARE ROOT OF A GIVEN NUMBER.
+
+
+SYNTAX:
+
+SQRT(NUMBER)
+
+EX:
+
+SELECT SQRT(36) FROM DUAL ;
+
+O/p : 6
+
+----------------------------------------------------------------
+
+6. ABS : 
+
+IT IS USED TO OBTAIN THE ABSOLUTE OF A GIVEN NUMBER.
+
+
+SYNTAX:
+
+ABS(NUMBER) 
+
+
+EX: 
+SELECT ABS(-10) , ABS(10) FROM DUAL ;
+
+O/P:  10  ,  10
+
+---------------------------------------------------------------
+
+
+charecter single row functions:
+
+---> CASE MANIPULATION FUNCTIONS.
+
+1. UPPER() :  IT IS USED TO CONVERT INTO IT'S UPPER CASE.
+
+	      IT CAN ACCEPT ONLY ONE ARGUMENT.
+
+EX: SELECT UPPER('bangalore') FROM DUAL ;
+
+O/P:  BANGALORE
+
+-----------------------------------------------------------------
+
+2. LOWER(): IT IS USED TO CONVERT THE GIVEN STRING TO IT LOWER             CASE.
+	    IT CAN ACCEPT ONLY ONE ARGUMENT.
+
+EX: SELECT LOWER('BANGALORE') FROM DUAL;
+
+O/P : bangalore
+
+-----------------------------------------------------------------
+
+3. INITCAP(): IT IS USED TO CONVERT THE GIVEN STRING TO
+              ITS' INIT CAP CASE
+
+(INITCAP CASE: FIRST CHARACTER OF EVERY WORD IN UPPER AND
+               REMAINING CHARACTERS IN LOWER)
+
+EX: SELECT INITCAP('BANGALORE') FROM DUAL ;
+
+O/p : Bangalore
+
+_________________________________________________________________
+
+character manipulation functions:
+
+1. length(): to find the length of the given string.
+	
+(note: if we pass a number as a argument to length it
+        returns no. of digits present)
+
+            LENGTH FUNCTION CAN ACCEPT ONLY ONE ARGUMENT.
+
+EX: SELECT LENGTH('BANGALORE') FROM DUAL;
+
+O/P : 9
+
+
+QUERY 
+
+1>  WAQ TO DISPLAY ENAME AS WELL AS LENGTH OF THEIR NAMES.
+
+
+2> WAQ TO DISPLAY NAMES OF ALL THE EMPLOYEES WHOSE NAME HAS GOT
+   MORE THAN 5 CHARACTERS.
+
+----------------------------------------------------------------
+
+2. CONCAT: IT IS USED TO CONCATINATE (MERGE) TWO STRINGS.
+
+	  IT CAN ACCEPT 2 ARGUMENTS.
+
+EX: SELECT CONCAT('BANG' , 'LORE') FROM DUAL;
+
+O/P: BANGLORE
+
+-----------------------------------------------------------------
+
+3. SUBSTR: IT IS USED TO OBTAIN(EXTRACT) A STRING FROM ANOTHER
+           STRING.
+
+	SUBSTR FUNCTION CAN ACCPET 3 ARGUMENTS.
+SYNTAX:
+	SUBSTR(STRING , POSITION [,LENGTH])
+
+ARG1: IS A STRING FROM WHERE THE NEW STRING CAN BE OBTAINED.
+
+ARG2: IS A NUMBER WHICH SPECIFIES THE POSITION FROM
+      WHERE THE NEW STRING HAS TO EXTRACTED.
+
+NOTE: POSITION CAN BE SPECIFIED IN +'VE' AND -'VE' NUMBERS.
+
+	--> +'VE' :- IT PROVIDES THE INDEX FROM LEFT TO RIGHT
+  		     OF A STRING (STARTING)
+		    THEREFORE, IF POSITION IS,
+			1 ---> FIRST CHARACTER.
+			2 ---> SECOND CHARACTER ETC.....
+
+	--> -'VE' :- IT PROVIDES THE INDEX FROM RIGHT TO LEFT
+                     OF A STRING (ENDING)
+		  THEREFORE, IF POSITION IS,
+			-1 ---> LAST CHARACTER.
+			-2 ---> LASTBUTONE(SECOND LAST) CHARACTER
+
+ARG3: IS A NUMBER WHICH SPECIFIES THE LENGTH OF THE NEW STRING
+	(LENGTH OF NUMBER CHARACTERS TO BE EXTRACTED FROM THE 
+          GIVEN POSITION OF THE STRING).
+
+NOTE : ARG3 IS NOT MANDATORY,
+
+THEREFORE, IF THE ARG3 IS NOT GIVEN, SUBSTR FUNCTION WOULD EXTRACT
+           ALL THE CHARACTERS FROM THE GIVEN POSITION TILL THE
+           LAST CHARACTER OF THE STRING.
+
+EXAMPLE:
+
+1. SUBSTR('BANGALORE' , 1,2)  	O/P : BA
+2. SUBSTR('BANGALORE' , -1,2) 	O/P : E
+3. SUBSTR('BANGALORE' , 4,5)	O/P : GALOR
+4. SUBSTR('BANGALORE' , 6,5) 	O/P : LORE
+5. SUBSTR('BANGALORE' , -4,5)	O/P : LORE
+6. SUBSTR('BANGALORE' , 10,2) 	O/P : NULL (NOTHING)
+7. SUBSTR('BANGALORE' , -3,1)   O/P : O
+8. SUBSTR('BANGALORE' , 4)	O/P : GALORE
+9. SUBSTR('BANGALORE' ,0,2)	O/P : BA
+10.SUBSTR('BANGALORE' ,2,-2)	O/P : NULL (NOTHING)
+
+
+QUERIES:
+
+1. WAQ TO DISPLAY NAMES OF ALL THE EMPLOYEES
+   WHICH BEGIN WITH AN VOWEL.
+
+2. WAQ TO DISPLAY NAMES OF ALL THE EMPLOYEES WHICH IS STARTING 
+   WITH ANY CHARACTER FROM D-N .
+
+3. WAQ TO DISPLAY NAMES OF ALL THE EMPLOYEES WHOSE NAME ENDS 
+   WITH A CONSONANT.
+
+------------------------------------------------------------------
+
+4. INSTR: IT IS USED TO FIND(SEARCH) FOR A SUBSTRING 
+          IN A STRING.
+
+	IT CAN ACCPET 4 ARGUMENTS
+SYNTAX: 
+	INSTR(STRING,SUBSTRING,[POSITION] , [NTH OCCURANCE])
+
+ARG1 : IS A STRING WHERE THE SUBSTRING HAS TO BE LOOKED FOR.
+
+ARG2 : IS A STRING WHICH HAS TO BE FOUND IN ARG1.
+
+ARG3 : IS A NUMBER WHICH SPECIFIES THE POSITION IN THE 
+       ARG1, TO START SEARCHING FOR THE STRING SPECIFIED IN 
+       ARG2.
+
+NOTE: 1. POSITION CAN BE SPECIFIED IN +'VE' AND -'VE' NUMBERS.
+
+	--> +'VE' :- IT PROVIDES THE INDEX FROM LEFT TO RIGHT
+  		     OF A STRING (STARTING)
+
+		    THEREFORE, IF POSITION IS,
+
+	1 ---> IT STARTS TO SEARCH FROM FIRST CHARACTER.
+	2 ---> IT STARTS TO SEARCH FROM SECOND CHARACTER ETC.....
+
+	--> -'VE' :- IT PROVIDES THE INDEX FROM RIGHT TO LEFT
+                     OF A STRING (ENDING)
+		  THEREFORE, IF POSITION IS,
+	-1 ---> IT STARTS TO SEARCH FROM LAST CHARACTER.
+	-2 ---> IT STARTS SEARCHING FROM LAST BUT ONE(SECOND LAST) 		CHARACTER
+
+ARG 4: IS A NUMBER WHICH SPECIFES THE NTH OCCURANCE OF THE 
+       SUBSTRING TO BE SEARCHED IN THE STRING GIVEN IN ARG1.
+
+NOTE 2: 
+
+THE ARG 3 AND ARG 4 ARE NOT MANDATORY, IF THEY ARE NOT PROVIDED BY
+DEFAULT ARG 3 AND ARG 4 ARE CONSIDERED TO BE 1.
+
+EXAMPLES: 
+
+1. INSTR('BANANA' , 'BAN')		O/P: 1
+2. INSTR('BANANA' , 'BAN',2,1)		O/P: 0
+3. INSTR('BANANA' , 'NA')		O/P: 3
+4. INSTR('BANANA' , 'NA',1,2)		O/P: 5
+5. INSTR('BANANA' , 'NA',4,1)		O/P: 5
+6. INSTR('BANANA' , 'NA',4,2)		O/P: 0
+7. INSTR('BANANA' , 'NA',-1)		O/P: 5
+8. INSTR('BANANA' , 'NA',-1,2)		O/P: 3 
+
+
+NOTE: 
+1. INSTR FUNCTION RETURNS 0 IF THE GIVEN SUBSTRING IS NOT
+   PRESENT IN THE STRING.
+
+2. INSTR FUNCTION RETURNS GREATER THAN 0 IF THE SUBSTR IS 
+   PRESENT IN THE STRING (POSITION OF THE OCCURANCE )
+
+QUERIES:
+
+1. WAQ TO DISPLAY NAME OF THE EMPLOYEE WHO HAS ATLEAST 2 L'S 
+   IN HIS NAME WITHOUT USING LIKE OPERATOR.
+
+
+2. WAQ TO DISPLAY ALL THE DETAILS OF EMPLOYEES WHOSE DESIGNATION
+   HAS SUBSTRING MAN IN IT. (WITHOUT LIKE)
+
+3. WAQ TO DISPLAY DETAILS OF EMPLOYEES , IF  LAST CHARACTER OF 
+   THEIR NAME IS PRESENT IN THEIR DESIGNATION.
+
+_______________________________________________________________
+
+5. REPLACE: REPLACE FUNCTION IS USED TO REPALCE A SUBSTRING
+	    FROM THE GIVEN STRING WITH A NEW STRING.
+	--> IT CAN ACCEPT 3 ARGUMENTS.
+
+	SYNTAX:
+
+	REPLACE( STRING , SUB_STRING [,NEW_STRING])
+
+ARG1: IS A STRING ON WHICH THE ACTION TO BE PERFORMED.
+
+ARG2: IS A SUBSTRING WHICH HAS TO BE REPLACED (REMOVED).
+
+ARG3: IS A NEW STRING TO BE INSERTED IN THE PLACE OF SUBSTRING REMOVED.
+
+	NOTE: 
+	----> ARG3 IS NOT MANDATORY IF ARG3 IS NOT PROVIDED THEN 
+	      THE REMOVED SUBSTRING WILL BE REPLACED WITH NOTHNG.
+
+EX: 
+
+1. REPLACE('BANANA' , 'A' , 'O') 	O/P: BONONO
+2. REPLACE('BANANA' , 'NA', 'O')	O/P: BAOO
+3. REPLACE('BANANA' , 'NA')		O/P: BA
+
+ 
+QUERIES:
+
+1. WAQ TO REPLACE THE LAST CHARACTER OF THE NAME OF THE EMPLOYEE
+   WITH '*'  IN THE NAME OF THE EMPLOYEE.
+
+2. WAQ TO DISPLAY NAME OF ALL THE EMPLOYEES WHO HAVE ONLY ONE 'L'
+   IN THEIR NAME.
+
+---------------------------------------------------------------------------- 
+
+Conversion Function:
+
+1. to_date():
+		it is used to conver thee given string
+into a date. The string should be in a date literal format.
+
+syntax:
+
+to_date('DD-MON-YYYY')
+
+
+2.to_char():
+
+it is used to convert the given date into a string in 
+the specified format.
+
+Syntax:
+
+to_char(date , 'FORMAT_STRING')
+
+FORMAT_STRING:
+
+1. YYYY :- gives year in 4 digit format.
+2. YY	:- gives year in 2 digit format.
+3. YEAR :- gives year in a word format.
+4. MONTH:- gives month in a word format.
+5. MON	:- gives first 3 characters of the month.
+6. MM	:- gives month number.
+7. DAY	:- gives name of the week.
+8. DY	:- gives first 3 characters from the week name.
+9. D	:- gives week number.
+10.DD	:- gives date.
+11.HH	:- gives hours in 12 hour format.
+12.HH24	:- gives hours in 24 hour format.
+13.MI	:- gives minutes.
+14.SS	:- gives seconds.
+
+ex:
+
+1. select to_char(to_date('28-jan-18'), 'dy') from dual;
+
+TO_
+---
+sun
+
+2.
+select to_char(to_date('28-jan-18'), 
+'DD MONTH YEAR DAY HH24:MI:SS') from dual 
+
+TO_CHAR(TO_DATE('28-JAN-18'),'DDMONTHYEARDAYHH24:MI:SS')
+--------------------------------------------------------------------------
+28 JANUARY   TWENTY EIGHTEEN SUNDAY    00:00:00
+
+3.
+select to_char(SYSDATE, 
+'DD MONTH YEAR DAY HH24:MI:SS') from dual 
+
+TO_CHAR(SYSDATE,'DDMONTHYEARDAYHH24:MI:SS')
+--------------------------------------------------------------------------
+28 JANUARY   TWENTY EIGHTEEN SUNDAY    21:37:56
+
+
+query:
+
+1. waq to display name of the employee hired on sunday.
+
+select * from emp
+where TO_CHAR(HIREDATE ,'DY') = 'SUN' ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
